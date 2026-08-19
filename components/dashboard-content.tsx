@@ -36,7 +36,6 @@ function StatCard({
   value,
   sub,
   live,
-  delay,
   testId,
 }: {
   icon: LucideIcon
@@ -44,14 +43,12 @@ function StatCard({
   value: string
   sub: string
   live?: boolean
-  delay: number
   testId: string
 }) {
   return (
     <div
       data-testid={testId}
-      className="reveal-up group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#12150A] via-[#0C0E07] to-[#080A06] p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#CCFF00]/35 hover:shadow-[0_12px_40px_-16px_rgba(204,255,0,0.25)] sm:p-5"
-      style={{ animationDelay: `${delay}ms` }}
+      className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#12150A] via-[#0C0E07] to-[#080A06] p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#CCFF00]/35 hover:shadow-[0_12px_40px_-16px_rgba(204,255,0,0.25)] sm:p-5"
     >
       <span
         aria-hidden
@@ -119,7 +116,7 @@ export function DashboardContent({ profile }: { profile: UserProfile }) {
           {/* hero card */}
           <section
             data-testid="dashboard-hero-card"
-            className="reveal-up border-luxe surface-luxe relative overflow-hidden rounded-3xl p-6 sm:p-8 lg:col-span-2"
+            className="border-luxe surface-luxe relative overflow-hidden rounded-3xl p-6 sm:p-8 lg:col-span-2"
           >
             <span aria-hidden className="welcome-luxe-border rounded-3xl" />
             <div
@@ -200,8 +197,7 @@ export function DashboardContent({ profile }: { profile: UserProfile }) {
           {/* daily usage */}
           <section
             data-testid="dashboard-usage-section"
-            className="reveal-up lg:col-span-1"
-            style={{ animationDelay: '120ms' }}
+            className="lg:col-span-1"
           >
             <TradingChart />
           </section>
@@ -214,7 +210,6 @@ export function DashboardContent({ profile }: { profile: UserProfile }) {
             label="Current plan"
             value={profile.plan}
             sub="Your membership tier"
-            delay={160}
             testId="dashboard-stat-plan"
           />
           <StatCard
@@ -222,7 +217,6 @@ export function DashboardContent({ profile }: { profile: UserProfile }) {
             label="Trading tools"
             value="5 AI tools"
             sub="Analyzers ready to use"
-            delay={220}
             testId="dashboard-stat-tools"
           />
           <StatCard
@@ -231,7 +225,6 @@ export function DashboardContent({ profile }: { profile: UserProfile }) {
             value="Live"
             sub="Streaming in real time"
             live
-            delay={280}
             testId="dashboard-stat-engine"
           />
         </div>
@@ -239,8 +232,7 @@ export function DashboardContent({ profile }: { profile: UserProfile }) {
         {/* ── trading tools ── */}
         <section
           data-testid="dashboard-tools-section"
-          className="reveal-up border-luxe surface-luxe relative overflow-hidden rounded-3xl p-5 sm:p-7"
-          style={{ animationDelay: '340ms' }}
+          className="border-luxe surface-luxe relative overflow-hidden rounded-3xl p-5 sm:p-7"
         >
           <div
             aria-hidden

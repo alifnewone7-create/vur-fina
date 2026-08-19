@@ -25,3 +25,8 @@
 ## June 2026 — Auth page mobile overflow fix
 - Fixed horizontal overflow (scrollWidth 508 vs 375) on /login & /registration: overflow-x-clip on AuthLayout main, glow div w-[40rem] -> w-full max-w-[40rem]; mobile paddings py-12 -> py-6 sm:py-12, logo mb-8 -> mb-6 sm:mb-8
 - Testing agent verified (iteration_5): no horizontal overflow at 375/390/1920 widths, login fits exactly on 375x700; registration 26px taller = real content; login flow regression passed
+
+## June 2026 — Nav glow + dashboard entrance animation removed (mobile perf)
+- top-nav.tsx: removed glow shadow behind sticky header wrapper
+- dashboard-content.tsx: removed all reveal-up entrance animations + animationDelay (hero, usage chart, 3 stat cards, tools section) — page opens instantly
+- Testing agent verified (iteration_6, 100%): boxShadow none, animationName none, opacity 1 on load, hamburger + login regression pass on 375px & 1920px

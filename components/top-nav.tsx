@@ -187,7 +187,7 @@ export function TopNav() {
 
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
-      <div className="border-luxe surface-luxe mx-auto max-w-6xl rounded-2xl shadow-[0_10px_40px_-12px_oklch(0.5_0.2_165_/_0.45)] backdrop-blur-xl">
+      <div className="border-luxe surface-luxe mx-auto max-w-6xl rounded-2xl backdrop-blur-xl">
         <nav className="flex items-center justify-between gap-4 px-3 py-2.5 sm:px-5 sm:py-3">
           {/* Mobile: hamburger (left) */}
           <button
