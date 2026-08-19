@@ -30,10 +30,11 @@ const TIER_ICON: Record<Tier, LucideIcon> = {
   admin: ShieldCheck,
 }
 
-function StatChip({
+function StatCard({
   icon: Icon,
   label,
   value,
+  sub,
   live,
   delay,
   testId,
@@ -41,6 +42,7 @@ function StatChip({
   icon: LucideIcon
   label: string
   value: string
+  sub: string
   live?: boolean
   delay: number
   testId: string
@@ -48,26 +50,56 @@ function StatChip({
   return (
     <div
       data-testid={testId}
-      className="reveal-up border-luxe surface-luxe relative flex items-center gap-3.5 overflow-hidden rounded-2xl p-4 sm:p-5"
+      className="reveal-up group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#12150A] via-[#0C0E07] to-[#080A06] p-4 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#CCFF00]/35 hover:shadow-[0_12px_40px_-16px_rgba(204,255,0,0.25)] sm:p-5"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#CCFF00]/25 bg-[#0A0C08] text-[#CCFF00] shadow-[0_0_16px_rgba(204,255,0,0.1)]">
-        <Icon className="h-5 w-5" />
-      </span>
-      <div className="min-w-0">
-        <p className="font-display text-[0.65rem] uppercase tracking-[0.18em] text-zinc-500">
-          {label}
-        </p>
-        <p className="font-display mt-0.5 flex items-center gap-2 truncate text-base font-semibold text-zinc-100">
+      <span
+        aria-hidden
+        className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[#CCFF00]/50 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#CCFF00]/[0.07] blur-2xl opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+      />
+
+      <div className="relative z-10 flex items-center gap-4 sm:block">
+        <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#CCFF00]/25 bg-[#0A0C08] text-[#CCFF00] shadow-[0_0_18px_rgba(204,255,0,0.12)] transition-transform duration-300 group-hover:scale-105 sm:mb-4">
+          <Icon className="h-5 w-5" />
           {live && (
-            <span className="relative flex h-2 w-2 shrink-0">
+            <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#CCFF00]/60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#CCFF00]" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full border border-[#0A0C08] bg-[#CCFF00]" />
             </span>
           )}
-          {value}
-        </p>
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <p className="font-display text-[0.62rem] uppercase tracking-[0.2em] text-zinc-500">
+            {label}
+          </p>
+          <p className="font-display mt-1 truncate text-xl font-semibold capitalize tracking-tight text-white sm:text-2xl">
+            {value}
+          </p>
+          <div className="mt-1.5 flex items-center gap-1.5 sm:mt-2.5">
+            {live ? (
+              <span className="relative flex h-1.5 w-1.5 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#CCFF00]/60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#CCFF00]" />
+              </span>
+            ) : (
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#CCFF00]/40" />
+            )}
+            <p className="font-display truncate text-[0.7rem] font-light text-zinc-500">
+              {sub}
+            </p>
+          </div>
+        </div>
       </div>
+
+      <span
+        aria-hidden
+        className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-[#CCFF00]/70 to-transparent transition-[width] duration-500 group-hover:w-full"
+      />
     </div>
   )
 }
@@ -177,24 +209,27 @@ export function DashboardContent({ profile }: { profile: UserProfile }) {
 
         {/* ── stats strip ── */}
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3 sm:gap-4">
-          <StatChip
+          <StatCard
             icon={TierIcon}
             label="Current plan"
             value={profile.plan}
+            sub="Your membership tier"
             delay={160}
             testId="dashboard-stat-plan"
           />
-          <StatChip
+          <StatCard
             icon={Layers}
             label="Trading tools"
             value="5 AI tools"
+            sub="Analyzers ready to use"
             delay={220}
             testId="dashboard-stat-tools"
           />
-          <StatChip
+          <StatCard
             icon={Cpu}
             label="Signal engine"
             value="Live"
+            sub="Streaming in real time"
             live
             delay={280}
             testId="dashboard-stat-engine"

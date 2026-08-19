@@ -13,3 +13,7 @@
 - next build succeeded (0 errors); user approved one-line shim edit (frontend/package.json: next dev -> next start) to serve production build
 - Verified: homepage 200 with title "Vertex AI — Smart Algorithmic Trading", /Vertex-Private-Island 200, /api proxy on 8001 working (session {"authed":false}, /api/news 401 auth-gated as expected)
 - No Firebase/Groq keys configured: login/signup/AI analysis inert by design
+
+## June 2026 — Dashboard stat cards redesign
+- Redesigned 3 dashboard stat cards (Current plan / Trading tools / Signal engine) in components/dashboard-content.tsx: gradient surface, top accent line, glowing icon tile, big value + sub-caption, hover lift with animated bottom bar
+- Responsive: horizontal icon layout on mobile, vertical stacked on desktop; verified via screenshots at 375px and 1920px after production rebuild
