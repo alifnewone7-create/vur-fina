@@ -17,3 +17,7 @@
 ## June 2026 — Dashboard stat cards redesign
 - Redesigned 3 dashboard stat cards (Current plan / Trading tools / Signal engine) in components/dashboard-content.tsx: gradient surface, top accent line, glowing icon tile, big value + sub-caption, hover lift with animated bottom bar
 - Responsive: horizontal icon layout on mobile, vertical stacked on desktop; verified via screenshots at 375px and 1920px after production rebuild
+
+## June 2026 — Auth tab switch made instant
+- Removed transition-colors/duration-200 from Login/Registration tab buttons and footer switch link in components/auth-card.tsx (phone lag fix); production rebuilt
+- Testing agent verified: transition-duration 0s on all three controls, instant mode switch on desktop + 375px mobile, login regression passing

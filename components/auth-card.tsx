@@ -101,7 +101,7 @@ export function AuthCard({ mode: initialMode }: { mode: AuthMode }) {
           aria-current={isLogin ? 'page' : undefined}
           data-testid="auth-tab-login"
           className={cn(
-            'font-display flex h-10 items-center justify-center rounded-lg text-sm font-semibold transition-colors duration-200',
+            'font-display flex h-10 items-center justify-center rounded-lg text-sm font-semibold',
             isLogin
               ? 'bg-[#CCFF00] text-black shadow-[0_2px_14px_rgba(204,255,0,0.35)]'
               : 'text-zinc-400 hover:text-white',
@@ -115,7 +115,7 @@ export function AuthCard({ mode: initialMode }: { mode: AuthMode }) {
           aria-current={!isLogin ? 'page' : undefined}
           data-testid="auth-tab-registration"
           className={cn(
-            'font-display flex h-10 items-center justify-center rounded-lg text-sm font-semibold transition-colors duration-200',
+            'font-display flex h-10 items-center justify-center rounded-lg text-sm font-semibold',
             !isLogin
               ? 'bg-[#CCFF00] text-black shadow-[0_2px_14px_rgba(204,255,0,0.35)]'
               : 'text-zinc-400 hover:text-white',
@@ -267,7 +267,7 @@ export function AuthCard({ mode: initialMode }: { mode: AuthMode }) {
           type="button"
           onClick={() => switchMode(isLogin ? 'registration' : 'login')}
           data-testid="auth-switch-link"
-          className="font-semibold text-[#CCFF00] transition-colors hover:text-white"
+          className="font-semibold text-[#CCFF00] hover:text-white"
         >
           {isLogin ? 'Register now' : 'Sign in'}
         </button>
