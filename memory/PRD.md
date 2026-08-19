@@ -21,3 +21,7 @@
 ## June 2026 — Auth tab switch made instant
 - Removed transition-colors/duration-200 from Login/Registration tab buttons and footer switch link in components/auth-card.tsx (phone lag fix); production rebuilt
 - Testing agent verified: transition-duration 0s on all three controls, instant mode switch on desktop + 375px mobile, login regression passing
+
+## June 2026 — Auth page mobile overflow fix
+- Fixed horizontal overflow (scrollWidth 508 vs 375) on /login & /registration: overflow-x-clip on AuthLayout main, glow div w-[40rem] -> w-full max-w-[40rem]; mobile paddings py-12 -> py-6 sm:py-12, logo mb-8 -> mb-6 sm:mb-8
+- Testing agent verified (iteration_5): no horizontal overflow at 375/390/1920 widths, login fits exactly on 375x700; registration 26px taller = real content; login flow regression passed

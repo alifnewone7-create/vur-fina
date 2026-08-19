@@ -285,7 +285,7 @@ const brandPoints = [
 export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <main
-      className="relative grid min-h-dvh grid-cols-1 bg-[#020302] lg:grid-cols-2"
+      className="relative grid min-h-dvh grid-cols-1 overflow-x-clip bg-[#020302] lg:grid-cols-2"
       style={{
         backgroundImage:
           'radial-gradient(ellipse 90% 55% at 50% -10%, #132600 0%, rgba(6,10,4,0.85) 45%, #020302 100%)',
@@ -329,13 +329,13 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Form panel */}
-      <div className="relative z-10 flex flex-col items-center justify-center px-4 py-12 sm:px-6">
+      <div className="relative z-10 flex flex-col items-center justify-center px-4 py-6 sm:px-6 sm:py-12">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full opacity-60 blur-[110px]"
+          className="pointer-events-none absolute left-1/2 top-0 h-72 w-full max-w-[40rem] -translate-x-1/2 rounded-full opacity-60 blur-[110px]"
           style={{ background: 'radial-gradient(ellipse at center, rgba(204,255,0,0.14), transparent 65%)' }}
         />
-        <div className="auth-logo-enter relative z-10 mb-8 flex flex-col items-center gap-3 lg:hidden">
+        <div className="auth-logo-enter relative z-10 mb-6 flex flex-col items-center gap-3 sm:mb-8 lg:hidden">
           <Link href="/" className="relative flex items-center justify-center" data-testid="auth-mobile-logo">
             <span className="auth-logo-glow" aria-hidden="true" />
             <Image
