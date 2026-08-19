@@ -3308,4 +3308,10 @@ a.btn-luxe-outline {
   .blur-3xl {
     filter: blur(36px) !important;
   }
+
+  /* the rotating conic border animates a custom property = full repaint every
+     frame; freeze it on mobile (static lime border edge stays visible) */
+  .welcome-luxe-border {
+    animation: none !important;
+  }
 }

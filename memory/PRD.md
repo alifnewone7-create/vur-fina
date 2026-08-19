@@ -35,3 +35,8 @@
 - globals.css MOBILE SCROLL PERFORMANCE block (max-width 1023px): background-attachment forced to scroll (kills fixed-bg repaint), backdrop-filter disabled on surface-luxe/clay-card/clay-inset/backdrop-blur-* with near-opaque dark fallbacks, decorative glow blurs halved (42px/36px)
 - Fixed Lightning CSS minifier dedupe bug: -webkit-backdrop-filter first, unprefixed last
 - Desktop >=1024px untouched. Testing agent iteration_8: 100% pass (mobile bf=none everywhere, desktop blur intact, no overflow, login regression OK)
+
+## June 2026 — Dashboard-specific mobile lag fix
+- Root cause: .welcome-luxe-border infinite conic-gradient border animation (custom-property driven = full repaint per frame) on 2 large dashboard cards (hero + Daily Limit)
+- Fix: animation frozen on mobile (<1024px) via MOBILE SCROLL PERFORMANCE block; static border edge remains; desktop unchanged
+- Testing agent iteration_9: 100% pass (animation-name none on mobile dashboard/login, welcome-luxe-border still animating on desktop, drawer opens smooth, no overflow)
