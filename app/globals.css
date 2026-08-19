@@ -3256,3 +3256,56 @@ a.btn-luxe-outline {
     animation: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE SCROLL PERFORMANCE
+   Same design language, but on touch-sized screens we drop the two effects
+   that force full repaints every scroll frame: fixed background attachment
+   and live backdrop blurs. Surfaces stay dark/opaque so nothing looks broken.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+  body,
+  .home-bg,
+  main,
+  section,
+  div {
+    background-attachment: scroll !important;
+  }
+
+  .surface-luxe,
+  .clay-card,
+  .clay-inset,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl,
+  [class*='backdrop-blur-['] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* keep glass cards readable without blur: near-opaque dark fill */
+  .surface-luxe {
+    background-color: rgba(10, 12, 7, 0.97);
+  }
+  .clay-card {
+    background: linear-gradient(
+      180deg,
+      oklch(0.265 0.008 240 / 0.97) 0%,
+      oklch(0.215 0.008 240 / 0.97) 100%
+    );
+  }
+  .clay-inset {
+    background: oklch(0.172 0.006 240 / 0.97);
+  }
+
+  /* soften giant decorative glows: halve blur radius = far less GPU memory */
+  [class*='blur-['] {
+    filter: blur(42px) !important;
+  }
+  .blur-3xl {
+    filter: blur(36px) !important;
+  }
+}

@@ -30,3 +30,8 @@
 - top-nav.tsx: removed glow shadow behind sticky header wrapper
 - dashboard-content.tsx: removed all reveal-up entrance animations + animationDelay (hero, usage chart, 3 stat cards, tools section) — page opens instantly
 - Testing agent verified (iteration_6, 100%): boxShadow none, animationName none, opacity 1 on load, hamburger + login regression pass on 375px & 1920px
+
+## June 2026 — Site-wide mobile scroll performance pass
+- globals.css MOBILE SCROLL PERFORMANCE block (max-width 1023px): background-attachment forced to scroll (kills fixed-bg repaint), backdrop-filter disabled on surface-luxe/clay-card/clay-inset/backdrop-blur-* with near-opaque dark fallbacks, decorative glow blurs halved (42px/36px)
+- Fixed Lightning CSS minifier dedupe bug: -webkit-backdrop-filter first, unprefixed last
+- Desktop >=1024px untouched. Testing agent iteration_8: 100% pass (mobile bf=none everywhere, desktop blur intact, no overflow, login regression OK)
