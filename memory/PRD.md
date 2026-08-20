@@ -40,3 +40,9 @@
 - Root cause: .welcome-luxe-border infinite conic-gradient border animation (custom-property driven = full repaint per frame) on 2 large dashboard cards (hero + Daily Limit)
 - Fix: animation frozen on mobile (<1024px) via MOBILE SCROLL PERFORMANCE block; static border edge remains; desktop unchanged
 - Testing agent iteration_9: 100% pass (animation-name none on mobile dashboard/login, welcome-luxe-border still animating on desktop, drawer opens smooth, no overflow)
+
+## June 2026 — Live Signals redesign
+- New analyzing loader (counter-rotating rings + orbiting spark + pulsing RadioTower core, transform/opacity only, no SMIL) replaces old infinity animation
+- "Live signal ready" heading removed; result card sits directly under top nav
+- New EntryClock (static face, hands rotate inside); result card + direction hero redesigned (CALL/PUT chip, big UP/DOWN, one-time sparkline draw, detail tiles) matching site UI
+- Testing agent iteration_10: 100% pass (6/6 checks both viewports); DOWN branch symmetric but not server-exercised in run

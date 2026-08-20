@@ -3315,3 +3315,200 @@ a.btn-luxe-outline {
     animation: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIVE SIGNAL V2 — generator loader, entry clock, direction hero.
+   All animations are transform/opacity only (compositor-friendly, no repaint)
+   so they stay smooth on phones.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.gen-stage {
+  position: relative;
+  width: 7.5rem;
+  height: 7.5rem;
+}
+.gen-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  border-top-color: var(--accent);
+  border-right-color: color-mix(in oklab, var(--accent) 35%, transparent);
+  animation: gen-spin 1.4s linear infinite;
+  will-change: transform;
+}
+.gen-ring--rev {
+  inset: 13px;
+  border: 2px dashed color-mix(in oklab, var(--accent) 30%, transparent);
+  animation: gen-spin 5.2s linear infinite reverse;
+}
+.gen-orbit {
+  position: absolute;
+  inset: 0;
+  animation: gen-spin 1.4s linear infinite;
+  will-change: transform;
+}
+.gen-orbit-dot {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 9999px;
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--accent) 80%, transparent);
+}
+.gen-core {
+  position: absolute;
+  inset: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  background: color-mix(in oklab, var(--accent) 8%, #0a0c08);
+  animation: gen-pulse 1.8s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes gen-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes gen-pulse {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* entry-time clock: face stays put, hands rotate inside */
+.sig-clock {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--accent);
+}
+.sig-clock-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 1.5px;
+  margin-left: -0.75px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+.sig-clock-hand--m {
+  height: 6px;
+  animation: gen-spin 2.4s linear infinite;
+}
+.sig-clock-hand--h {
+  height: 4px;
+  opacity: 0.75;
+  animation: gen-spin 9.6s linear infinite;
+}
+.sig-clock-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+
+/* direction hero panel */
+.sig-hero-up {
+  border-color: color-mix(in oklab, var(--up) 35%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--up) 14%, #0a0c08) 0%,
+    rgba(8, 10, 6, 0.92) 55%,
+    #080a06 100%
+  );
+}
+.sig-hero-down {
+  border-color: color-mix(in oklab, var(--down) 35%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--down) 14%, #0a0c08) 0%,
+    rgba(8, 10, 6, 0.92) 55%,
+    #080a06 100%
+  );
+}
+.sig-pulse-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid currentColor;
+  border-radius: inherit;
+  opacity: 0;
+  animation: sig-pulse-ring 2.2s ease-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes sig-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* one-time sparkline draw */
+.sig-spark-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 170;
+  stroke-dashoffset: 170;
+  animation: sig-draw 0.9s ease-out 0.15s forwards;
+}
+@keyframes sig-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.sig-spark-dot {
+  opacity: 0;
+  animation: sig-dot-in 0.3s ease-out 0.95s forwards;
+}
+@keyframes sig-dot-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gen-ring,
+  .gen-orbit,
+  .gen-core,
+  .sig-clock-hand,
+  .sig-pulse-ring {
+    animation: none !important;
+  }
+  .sig-spark-line {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+  .sig-spark-dot {
+    animation: none !important;
+    opacity: 1;
+  }
+}

@@ -5,7 +5,6 @@ import {
   Radio,
   Landmark,
   Search,
-  Clock,
   Timer,
   ChevronsUp,
   ChevronsDown,
@@ -15,7 +14,6 @@ import {
   ChevronRight,
   RadioTower,
   Repeat,
-  ShieldCheck,
   Cpu,
   Info,
   RefreshCw,
@@ -35,10 +33,6 @@ type LiveSignal = {
   entry: Date
   direction: 'UP' | 'DOWN'
 }
-
-// Figure-8 / infinity (lemniscate) path in a 200x100 viewBox.
-const INFINITY_PATH =
-  'M 100 50 C 128 14, 188 14, 188 50 C 188 86, 128 86, 100 50 C 72 14, 12 14, 12 50 C 12 86, 72 86, 100 50 Z'
 
 const ANALYSIS_LINES = [
   'Linking neural core',
@@ -373,34 +367,20 @@ function AnalysisStage() {
   }, [])
 
   return (
-    <div className="inf-surface flex flex-col items-center gap-5 overflow-hidden rounded-2xl border border-accent/20 py-10">
-      <div className="inf-stage">
-        <span className="inf-core" />
-        <svg className="inf-svg" viewBox="0 0 200 100" role="img" aria-label="Analyzing">
-          <defs>
-            <linearGradient id="inf-grad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="var(--accent)" />
-              <stop offset="50%" stopColor="var(--primary)" />
-              <stop offset="100%" stopColor="var(--accent)" />
-            </linearGradient>
-            <radialGradient id="inf-comet" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%" stopColor="var(--accent)" stopOpacity="1" />
-              <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          <path className="inf-track" d={INFINITY_PATH} />
-          <path className="inf-glow" d={INFINITY_PATH} />
-          <path className="inf-flow" d={INFINITY_PATH} />
-          <path className="inf-flow inf-flow-2" d={INFINITY_PATH} />
-          {/* comet travelling along the infinity path */}
-          <circle className="inf-comet" r="5" fill="url(#inf-comet)">
-            <animateMotion dur="2.4s" repeatCount="indefinite" path={INFINITY_PATH} rotate="auto" />
-          </circle>
-          <circle className="inf-comet inf-comet-2" r="4" fill="url(#inf-comet)">
-            <animateMotion dur="2.4s" begin="-1.2s" repeatCount="indefinite" path={INFINITY_PATH} rotate="auto" />
-          </circle>
-          <circle className="inf-node" cx="100" cy="50" r="3" />
-        </svg>
+    <div
+      data-testid="live-analyzing-stage"
+      className="flex flex-col items-center gap-6 overflow-hidden rounded-2xl border border-accent/20 bg-[#0A0C08]/70 py-10"
+    >
+      {/* signal-lock loader: two counter-rotating rings + orbiting spark + pulsing core */}
+      <div className="gen-stage" role="img" aria-label="Analyzing">
+        <span className="gen-ring" aria-hidden />
+        <span className="gen-ring gen-ring--rev" aria-hidden />
+        <span className="gen-orbit" aria-hidden>
+          <span className="gen-orbit-dot" />
+        </span>
+        <span className="gen-core">
+          <RadioTower className="h-6 w-6 text-accent" />
+        </span>
       </div>
 
       <div className="flex items-center gap-2 font-mono text-xs text-accent sm:text-sm">
@@ -426,6 +406,48 @@ function AnalysisStage() {
   )
 }
 
+function EntryClock() {
+  return (
+    <span className="sig-clock" aria-hidden>
+      <span className="sig-clock-hand sig-clock-hand--m" />
+      <span className="sig-clock-hand sig-clock-hand--h" />
+      <span className="sig-clock-dot" />
+    </span>
+  )
+}
+
+function DetailTile({
+  label,
+  value,
+  children,
+  testId,
+  className,
+}: {
+  label: string
+  value: string
+  children: React.ReactNode
+  testId: string
+  className?: string
+}) {
+  return (
+    <div
+      data-testid={testId}
+      className={cn(
+        'flex items-center gap-3 rounded-xl border border-white/[0.07] bg-[#0A0C08]/80 px-3.5 py-3',
+        className,
+      )}
+    >
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.07]">
+        {children}
+      </span>
+      <div className="min-w-0">
+        <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</p>
+        <p className="truncate font-mono text-sm font-bold tabular-nums">{value}</p>
+      </div>
+    </div>
+  )
+}
+
 function ResultBlock({
   signal,
   onBack,
@@ -436,122 +458,131 @@ function ResultBlock({
   const { market, entry, direction } = signal
   const isUp = direction === 'UP'
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col gap-4 duration-500">
-      <div className="flex items-center gap-2">
-        <ShieldCheck className="shield-beat h-4 w-4 text-up" />
-        <h3 className="font-mono text-sm font-bold text-up">Live signal ready</h3>
-      </div>
+    <div className="animate-in fade-in flex flex-col gap-4 duration-300">
+      <div
+        data-testid="live-signal-result-card"
+        className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-b from-[#12150A] via-[#0C0E07] to-[#080A06] p-5 sm:p-6"
+      >
+        <span
+          aria-hidden
+          className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-[#CCFF00]/60 to-transparent"
+        />
 
-      <div className="border-luxe surface-luxe card-corner-glow animate-in fade-in slide-in-from-bottom-3 relative overflow-hidden rounded-2xl p-5 duration-500">
         <div className="relative z-10 flex flex-col gap-4">
+          {/* header: pair + trade-type chip */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <PairFlags base={market.base} quote={market.quote} size={30} />
               <div>
                 <p className="text-lg font-bold tracking-tight">{marketLabel(market)}</p>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-accent">
+                <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-accent">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
                   {market.type === 'otc' ? 'OTC Market' : 'Real Market'} · Live
                 </p>
               </div>
             </div>
             <span
+              data-testid="live-signal-trade-chip"
               className={cn(
-                'flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-bold',
-                isUp ? 'bg-up/15 text-up' : 'bg-down/15 text-down',
+                'flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-widest',
+                isUp
+                  ? 'border-up/40 bg-up/10 text-up'
+                  : 'border-down/40 bg-down/10 text-down',
               )}
             >
               {isUp ? (
-                <ChevronsUp className="dir-arrow-up h-4 w-4" />
+                <ChevronsUp className="h-4 w-4" />
               ) : (
-                <ChevronsDown className="dir-arrow-down h-4 w-4" />
+                <ChevronsDown className="h-4 w-4" />
               )}
-              {direction}
+              {isUp ? 'CALL' : 'PUT'}
             </span>
           </div>
 
+          {/* direction hero */}
           <div
+            data-testid="live-signal-direction"
             className={cn(
-              'signal-card relative flex items-center gap-4 overflow-hidden rounded-2xl border p-4 sm:gap-5 sm:p-5',
-              isUp ? 'signal-card-up text-up' : 'signal-card-down text-down',
+              'relative overflow-hidden rounded-2xl border p-4 sm:p-5',
+              isUp ? 'sig-hero-up' : 'sig-hero-down',
             )}
           >
-            {/* moving scan line across the top edge */}
-            <span className="signal-card-scan" aria-hidden />
-            {/* faint ticker grid backdrop */}
-            <span className="signal-card-grid" aria-hidden />
+            <div className="relative z-10 flex items-center gap-4 sm:gap-5">
+              <div
+                className={cn(
+                  'relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border sm:h-20 sm:w-20',
+                  isUp
+                    ? 'border-up/40 bg-up/10 text-up'
+                    : 'border-down/40 bg-down/10 text-down',
+                )}
+              >
+                <span className="sig-pulse-ring" aria-hidden />
+                {isUp ? (
+                  <ArrowUp className="h-8 w-8 sm:h-10 sm:w-10" strokeWidth={2.75} />
+                ) : (
+                  <ArrowDown className="h-8 w-8 sm:h-10 sm:w-10" strokeWidth={2.75} />
+                )}
+              </div>
 
-            {/* left: directional badge */}
-            <div
-              className={cn(
-                'signal-badge relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl sm:h-20 sm:w-20',
-                isUp ? 'signal-badge-up' : 'signal-badge-down',
-              )}
-            >
-              <span className="signal-badge-glow" aria-hidden />
-              <span className="signal-badge-ring" aria-hidden />
-              {isUp ? (
-                <ArrowUp className="signal-badge-icon relative h-8 w-8 sm:h-10 sm:w-10" strokeWidth={2.75} />
-              ) : (
-                <ArrowDown className="signal-badge-icon relative h-8 w-8 sm:h-10 sm:w-10" strokeWidth={2.75} />
-              )}
-            </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                  Signal Direction
+                </p>
+                <p
+                  className={cn(
+                    'mt-1 font-mono text-4xl font-extrabold uppercase leading-none tracking-tight sm:text-5xl',
+                    isUp ? 'text-up' : 'text-down',
+                  )}
+                >
+                  {direction}
+                </p>
+              </div>
 
-            {/* middle: label */}
-            <div className="relative flex min-w-0 flex-1 flex-col gap-1">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                Direction
-              </span>
-              <p className="font-mono text-3xl font-extrabold uppercase leading-none tracking-tight sm:text-4xl">
-                {direction}
-              </p>
-            </div>
-
-            {/* right: animated strength equalizer */}
-            <div className="relative flex h-14 shrink-0 items-end gap-1 sm:h-16">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <span
-                  key={i}
-                  className="signal-eq-bar"
-                  style={{ animationDelay: `${i * 0.12}s` }}
-                  aria-hidden
+              {/* one-time trend draw */}
+              <svg
+                className={cn('h-14 w-20 shrink-0 sm:w-24', isUp ? 'text-up' : 'text-down')}
+                viewBox="0 0 96 56"
+                aria-hidden
+              >
+                <polyline
+                  className="sig-spark-line"
+                  points={
+                    isUp
+                      ? '4,48 24,40 40,44 60,24 74,28 92,8'
+                      : '4,8 24,16 40,12 60,32 74,28 92,48'
+                  }
                 />
-              ))}
+                <circle
+                  className="sig-spark-dot"
+                  cx="92"
+                  cy={isUp ? 8 : 48}
+                  r="4"
+                  fill="currentColor"
+                />
+              </svg>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2.5">
-            <div className="flex items-center gap-2 rounded-xl bg-input/25 px-3 py-2.5">
-              <Clock className="clock-hands h-4 w-4 shrink-0 text-accent" />
-              <div>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                  Entry time
-                </p>
-                <p className="font-mono text-sm font-bold tabular-nums">{formatTime(entry)}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 rounded-xl bg-input/25 px-3 py-2.5">
-              <Timer className="icon-shake h-4 w-4 shrink-0 text-accent" />
-              <div>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                  Duration
-                </p>
-                <p className="font-mono text-sm font-bold">1 Min</p>
-              </div>
-            </div>
+          {/* details */}
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            <DetailTile label="Entry time" value={formatTime(entry)} testId="live-signal-entry-time">
+              <EntryClock />
+            </DetailTile>
+            <DetailTile label="Duration" value="1 Min" testId="live-signal-duration">
+              <Timer className="h-4 w-4 text-accent" />
+            </DetailTile>
+            <DetailTile
+              label="Money Management"
+              value="1 Step MTG Must"
+              testId="live-signal-mtg"
+              className="col-span-2 sm:col-span-1"
+            >
+              <Repeat className="h-4 w-4 text-accent" />
+            </DetailTile>
           </div>
 
-          <div className="flex items-center gap-2 rounded-xl bg-input/25 px-3 py-2.5">
-            <Repeat className="repeat-swap h-4 w-4 shrink-0 text-accent" />
-            <div>
-              <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                Money Management
-              </p>
-              <p className="font-mono text-sm font-bold">1 Step MTG Must</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1.5 rounded-xl border border-accent/25 bg-accent/10 px-3 py-2 text-[11px] text-accent">
-            <Info className="info-pulse h-3.5 w-3.5 shrink-0" />
+          <div className="flex items-center gap-2 rounded-xl border border-accent/25 bg-accent/10 px-3.5 py-2.5 text-[11px] font-medium text-accent">
+            <Info className="h-3.5 w-3.5 shrink-0" />
             Place the {isUp ? 'CALL' : 'PUT'} at {formatTime(entry)} · 1 Step MTG must if it loses
           </div>
         </div>
